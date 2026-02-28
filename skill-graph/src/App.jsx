@@ -1045,9 +1045,7 @@ export default function App() {
     setShowLanding(false);
   };
 
-  if (showLanding) return <LandingPage onEnter={handleEnter} />;
-
-  // Persist state
+  // Persist state — must be before any early returns (Rules of Hooks)
   useEffect(() => {
     try { localStorage.setItem('team-skill-graph', JSON.stringify(appState)); } catch (_) {}
   }, [appState]);
@@ -1058,6 +1056,8 @@ export default function App() {
     window.addEventListener('resize', h);
     return () => window.removeEventListener('resize', h);
   }, []);
+
+  if (showLanding) return <LandingPage onEnter={handleEnter} />;
 
   const renderView = () => {
     const props = { state: appState, dispatch };
