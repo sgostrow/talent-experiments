@@ -976,7 +976,7 @@ function LandingPage({ onEnter }) {
           See how your team's strengths map to your work
         </h1>
         <p style={{ margin: '0 0 32px', fontSize: '15px', color: '#4B5563', lineHeight: 1.65 }}>
-          Skill Graph helps managers visualize skill distributions, track alignment between self- and manager assessments, and surface where talent is — or isn't — being used.
+          Team Skill Graph helps you ensure all your team members are applying their strengths where it matters most by visualizing skill distributions, tracking alignment between self- and manager assessments, and surfacing where top skills are — or aren't — being used.
         </p>
 
         {/* Steps */}
