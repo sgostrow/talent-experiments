@@ -923,6 +923,104 @@ function LegendItem({ color, dashed, label }) {
   );
 }
 
+// ─── Landing Page ──────────────────────────────────────────────────────────────
+
+function LandingPage({ onEnter }) {
+  const steps = [
+    {
+      num: '1',
+      title: 'Add your team',
+      body: 'Go to Team Members to add people, assign roles, and rate each person across skill dimensions — both from your perspective as manager and their own self-assessment.',
+    },
+    {
+      num: '2',
+      title: 'Log active tasks',
+      body: 'In Tasks, add the work your team is currently doing and tag each task to the skills it draws on. This lets the tool see how strengths map to actual workload.',
+    },
+    {
+      num: '3',
+      title: 'Read the insights',
+      body: 'The Dashboard shows a skill heatmap, individual radar charts comparing manager vs. self ratings, and auto-generated nudges — like when someone rates themselves highly in a skill that no current task uses.',
+    },
+  ];
+
+  return (
+    <div style={{
+      minHeight: '100vh', background: '#FAFAFA',
+      fontFamily: "'Inter', system-ui, sans-serif",
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '32px 16px',
+    }}>
+      <div style={{ maxWidth: '560px', width: '100%' }}>
+        {/* Logo + title */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+          <div style={{
+            width: '40px', height: '40px', flexShrink: 0,
+            background: 'linear-gradient(135deg, #5B5BD6 0%, #0EA5E9 100%)',
+            borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div>
+            <div style={{ fontSize: '20px', fontWeight: 700, color: '#111827', lineHeight: 1.2 }}>Skill Graph</div>
+            <div style={{ fontSize: '13px', color: '#6B7280' }}>Team talent dashboard</div>
+          </div>
+        </div>
+
+        {/* Headline */}
+        <h1 style={{ margin: '0 0 12px', fontSize: '26px', fontWeight: 700, color: '#111827', lineHeight: 1.3 }}>
+          See how your team's strengths map to your work
+        </h1>
+        <p style={{ margin: '0 0 32px', fontSize: '15px', color: '#4B5563', lineHeight: 1.65 }}>
+          Skill Graph helps managers visualize skill distributions, track alignment between self- and manager assessments, and surface where talent is — or isn't — being used.
+        </p>
+
+        {/* Steps */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
+          {steps.map(({ num, title, body }) => (
+            <div key={num} style={{
+              display: 'flex', gap: '16px', background: 'white',
+              border: '1px solid #E5E7EB', borderRadius: '12px', padding: '20px',
+            }}>
+              <div style={{
+                width: '28px', height: '28px', flexShrink: 0,
+                background: '#EEF2FF', borderRadius: '50%',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '13px', fontWeight: 700, color: '#5B5BD6',
+              }}>{num}</div>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginBottom: '4px' }}>{title}</div>
+                <div style={{ fontSize: '13px', color: '#6B7280', lineHeight: 1.6 }}>{body}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mock-data callout */}
+        <div style={{
+          background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '12px',
+          padding: '16px 20px', marginBottom: '32px',
+          display: 'flex', gap: '12px', alignItems: 'flex-start',
+        }}>
+          <AlertCircle size={16} style={{ color: '#D97706', flexShrink: 0, marginTop: '2px' }} />
+          <p style={{ margin: 0, fontSize: '13px', color: '#92400E', lineHeight: 1.6 }}>
+            <strong>The data you see is sample data.</strong> Everything is editable — add your real team members, adjust skill dimensions in Settings, and log your actual tasks. Your changes are saved automatically in this browser.
+          </p>
+        </div>
+
+        {/* CTA */}
+        <Btn onClick={onEnter} size="lg" style={{ width: '100%', justifyContent: 'center' }}>
+          Get started
+        </Btn>
+      </div>
+    </div>
+  );
+}
+
 // ─── Navigation config ─────────────────────────────────────────────────────────
 
 const NAV = [
@@ -938,6 +1036,16 @@ export default function App() {
   const [appState, dispatch] = useReducer(reducer, undefined, loadInitialState);
   const [view, setView] = useState('dashboard');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [showLanding, setShowLanding] = useState(
+    () => localStorage.getItem('skill-graph-seen') !== 'true'
+  );
+
+  const handleEnter = () => {
+    localStorage.setItem('skill-graph-seen', 'true');
+    setShowLanding(false);
+  };
+
+  if (showLanding) return <LandingPage onEnter={handleEnter} />;
 
   // Persist state
   useEffect(() => {
