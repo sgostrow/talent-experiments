@@ -12,7 +12,7 @@ import {
   RotateCcw,
 } from 'lucide-react';
 
-import RadarChartComponent from './components/RadarChartComponent';
+import RadarChartComponent, { TeamOverviewRadar } from './components/RadarChartComponent';
 import RatingSliders from './components/RatingSliders';
 import SkillHeatmap from './components/SkillHeatmap';
 import NudgeCards from './components/NudgeCards';
@@ -331,6 +331,11 @@ function DashboardView({ state, dispatch }) {
         </p>
       </div>
 
+      {/* Team Overview — holistic radar, moved to top */}
+      {state.members.length > 0 && (
+        <TeamOverviewRadar skills={state.skills} members={state.members} />
+      )}
+
       {/* Stat row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px' }}>
         {[
@@ -358,31 +363,6 @@ function DashboardView({ state, dispatch }) {
       {/* Heatmap */}
       {state.members.length > 0 && (
         <SkillHeatmap skills={state.skills} members={state.members} />
-      )}
-
-      {/* Mini radar grid */}
-      {state.members.length > 0 && (
-        <div>
-          <h3 style={{ margin: '0 0 12px', fontSize: '15px', fontWeight: 600, color: '#111827' }}>
-            Team Overview
-          </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px' }}>
-            {state.members.map(member => (
-              <div key={member.id} style={{
-                background: 'white', border: '1px solid #E5E7EB', borderRadius: '12px', padding: '16px',
-              }}>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#111827' }}>{member.name}</div>
-                <div style={{ fontSize: '12px', color: '#6B7280', marginBottom: '4px' }}>{member.role}</div>
-                <RadarChartComponent
-                  skills={state.skills}
-                  managerRatings={member.managerRatings}
-                  selfRatings={member.selfRatings}
-                  mini
-                />
-              </div>
-            ))}
-          </div>
-        </div>
       )}
 
       {state.members.length === 0 && (
